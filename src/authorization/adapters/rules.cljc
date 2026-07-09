@@ -30,8 +30,9 @@
    :matched? (boolean matched?)})
 
 (defn- evaluate-rules [rules payload default-decision policy-ref policy-version]
-  (let [matched-rule (first (filter #(rule-match? payload %) rules))
-        effect-trace (mapv #(rule-effect % (= % matched-rule)) rules)]
+  (let [matched-idx (first (keep-indexed (fn [i r] (when (rule-match? payload r) i)) rules))
+        matched-rule (when matched-idx (nth rules matched-idx))
+        effect-trace (vec (map-indexed (fn [i r] (rule-effect r (= i matched-idx))) rules))]
     (if matched-rule
       {:decision (:decision matched-rule)
        :by (or (:by matched-rule) "rules")
