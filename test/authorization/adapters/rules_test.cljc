@@ -54,3 +54,21 @@
            (:authz.decision/effect-trace decision)))
     (is (= [{:type :audit :sink "authz"}]
            (:authz.decision/obligations decision)))))
+
+(deftest effect-trace-flags-only-the-positionally-selected-rule
+  ;; A rule bundle can contain two structurally-identical rules (a config-
+  ;; merge/dedup accident, or two independently-authored rules that happen to
+  ;; encode the same principal/action/resource/decision). Only the FIRST one
+  ;; (the one `first`/`filter` actually selects) determines the decision --
+  ;; the trace must reflect that positional selection, not content equality,
+  ;; or a downstream audit/compliance tool trusting :matched? to attribute a
+  ;; decision to a specific rule will double-count/misattribute.
+  (let [dup-rule {:id "r-allow" :principal "did:web:example.com:alice"
+                  :action "read" :resource "doc:1" :decision :allow}
+        engine (rules/rules-engine [dup-rule dup-rule])
+        port (policy/policy-port engine {})
+        req (m/request "az5" "did:web:example.com:alice" "read" "doc:1" {})
+        decision (c/authorize port req)]
+    (is (= [{:rule-id "r-allow" :decision :allow :matched? true}
+            {:rule-id "r-allow" :decision :allow :matched? false}]
+           (:authz.decision/effect-trace decision)))))
