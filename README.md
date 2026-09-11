@@ -38,5 +38,5 @@ value are dropped rather than asserted as nil, which a real transactor rejects.
 ## Test
 
 ```bash
-clojure -M:test
+kbb -M:test
 ```
