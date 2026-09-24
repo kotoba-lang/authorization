@@ -2,7 +2,7 @@
   (:require [authorization.adapters.cacao-policy :as cp]
             [authorization.core :as c]
             [authorization.model :as m]
-            [clojure.test :refer [deftest is]]))
+            [kotoba.test :refer [deftest is]]))
 
 (deftest authorizes-through-cacao-capability-and-policy-engine
   (let [port (cp/cacao-policy-port

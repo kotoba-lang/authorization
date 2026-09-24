@@ -2,7 +2,7 @@
   (:require [authorization.adapters.policy :as a]
             [authorization.core :as c]
             [authorization.model :as m]
-            [clojure.test :refer [deftest is]]))
+            [kotoba.test :refer [deftest is]]))
 
 (deftest delegates-to-policy-engine
   (let [calls (atom [])

@@ -3,7 +3,7 @@
             [authorization.adapters.rules :as rules]
             [authorization.core :as c]
             [authorization.model :as m]
-            [clojure.test :refer [deftest is]]))
+            [kotoba.test :refer [deftest is]]))
 
 (deftest evaluates-rules-policy-engine
   (let [engine (rules/rules-engine [{:principal "did:web:example.com:alice"

@@ -1,5 +1,5 @@
 (ns authorization.core-test
-  (:require [clojure.test :refer [deftest is]]
+  (:require [kotoba.test :refer [deftest is]]
             [authorization.core :as c]
             [authorization.model :as m]
             [authorization.ports :as p]))
