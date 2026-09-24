@@ -15,7 +15,7 @@
   - attributes with no value are dropped rather than asserted as nil
   - nested EDN is stored as a `pr-str` blob (`read-blobs` reads it back),
     because no Datomic value type holds a vector of maps"
-  (:require #?(:clj [clojure.edn :as edn]
+  (:require #?(:clj [kotoba.lang.edn :as edn]
                :cljs [cljs.reader :as edn])))
 
 (def blob-attrs
